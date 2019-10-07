@@ -29,9 +29,9 @@ ARCH=i386
 ELF-GC-DYNSTR=./elf-gc-dynstr
 
 ifeq ($(OS),Linux)
-	CC="gcc -m32"
-	CPLUS="g++ -m32"
-	CPP_LIB:=-L$(shell g++ -m32 -print-file-name=libstdc++.so | xargs dirname) -lstdc++ -ldl -lpthread
+	CC="gcc -fPIC"
+	CPLUS="g++ -fPIC"
+	CPP_LIB:=-L$(shell g++ -fPIC -print-file-name=libstdc++.so | xargs dirname) -lstdc++ -ldl -lpthread
 endif
 
 ifeq ($(OS),Darwin)
@@ -69,9 +69,9 @@ ARCH_CFLAGS_AMD64=-m64 -gdwarf-2 -g2
 endif
 
 ifeq ($(OS),Linux)
-ARCH_CFLAGS_I486+=-march=pentium-m -mfpmath=387
-ARCH_CFLAGS_I686+=-march=pentium-m -mfpmath=387
-ARCH_CFLAGS_AMD+=-march=k6 -mfpmath=387
+ARCH_CFLAGS_I486+=
+ARCH_CFLAGS_I686+=
+ARCH_CFLAGS_AMD+=
 endif
 
 ifeq ($(OS),Darwin)
@@ -100,7 +100,7 @@ SHLIBLDFLAGS="-shared -gdwarf-2 -g2"
 else
 SHLIBEXT=so
 SHLIBCFLAGS=
-SHLIBLDFLAGS="-shared -gdwarf-2 -g2 -Wl,-Map,$@_map.txt"
+SHLIBLDFLAGS="-shared -fuse-ld=gold -Wl,--no-gnu-unique -gdwarf-2 -g2"
 endif
 AR=ar
 LIBEXT=a
