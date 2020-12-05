@@ -119,6 +119,8 @@ typedef unsigned char      uint8;
 	typedef unsigned int uchar32;
 #endif
 #else // _WIN32
+	#include <stdint.h>
+#if 0
 	typedef unsigned long long uint64_t;
 	typedef unsigned int uint32_t;
 	typedef unsigned short uint16_t;
@@ -130,7 +132,8 @@ typedef unsigned char      uint8;
 		typedef short int16_t;
 		//typedef char int8_t;
 	#endif
-typedef long long __int64_t;
+	typedef long long __int64_t;
+#endif
 
 	typedef unsigned char byte;
 	typedef unsigned char BYTE;

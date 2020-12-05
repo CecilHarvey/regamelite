@@ -60,8 +60,20 @@
 
 extern globalvars_t *gpGlobals;
 
+#if !defined(_M_X64) && !defined(__amd64__)
 #define STRING(offset)		((const char *)(gpGlobals->pStringBase + (unsigned int)(offset)))
-#define MAKE_STRING(str)	((uint64_t)(str) - (uint64_t)(STRING(0)))
+#define MAKE_STRING(str)	((int)(long int)str - (int)(long int)STRING(0))
+#else
+#define STRING(offset)		((const char *)(gpGlobals->pStringBase + (int)(offset)))
+static inline int MAKE_STRING(const char *szValue)
+{
+	long long ptrdiff = szValue - STRING(0);
+	if( ptrdiff > INT_MAX || ptrdiff < INT_MIN )
+		return ALLOC_STRING( szValue );
+	else
+		return (int)ptrdiff;
+}
+#endif
 
 // Dot products for view cone checking
 
